@@ -14,7 +14,7 @@ typedef struct Node {
 int post[31]; //LRV
 int in[31]; //LVR
 Node *tree;
-
+Node *tree2;
 void buildTree(int p1, int p2, int i1, int i2, Node* &treeNode) {
 	if (treeNode==NULL)
 	{
@@ -24,28 +24,24 @@ void buildTree(int p1, int p2, int i1, int i2, Node* &treeNode) {
 	{
 		return;
 	}
+	//cout << "flag"<< endl;
 	treeNode->lchild = NULL;
 	treeNode->rchild = NULL;
-	for (int i =i1 ; i <=i2; i++)
+	treeNode->data = post[p2];
+	//cout <<post[p2] << endl;
+	int count = p1;
+	int i;
+	for ( i =i1 ; i <=i2; i++, count++)
 	{
 		if (post[p2] == in[i]) { //V found
-			treeNode->data = in[i];
-//			tree.lchild = new Node();
-			int length = i - i1;
-			if (length!=0)
-			{
-				tree->lchild = new Node();
-				buildTree(p1, p1 + length - 1, i1, i1 + length - 1, tree->lchild);
-			}
-			length = i2 - i;
-			if (length!=0)
-			{
-				tree->rchild = new Node();
-				buildTree(i, i + length - 1, i + 1, i2, tree->rchild);
-			}
+			break;
 		}
+		
 	}
+	buildTree(p1, count - 1, i1, i - 1, treeNode->lchild);
+	buildTree(count, p2 - 1, i + 1, i2, treeNode->rchild);
 }
+
 
 int main() {
 	int N;
@@ -60,6 +56,7 @@ int main() {
 	}
 	tree = new Node();
 	buildTree(0, N - 1, 0, N - 1, tree);
+
 	queue<Node*>level;
 	level.push(tree);
 	vector<int>output;
@@ -68,7 +65,7 @@ int main() {
 		if (level.front()->data)
 		{
 			int number = level.front()->data;
-			cout << number << endl;
+//			cout << number << endl;
 			output.push_back(number);
 		}
 
@@ -82,18 +79,18 @@ int main() {
 		}
 		level.pop();
 	}
-	//bool flag = false;
-	//for (int i = 0; i < N; i++)
-	//{
-	//	if (!flag) {
-	//		flag = true;
-	//		cout << output[i];
-	//	}
-	//	else
-	//	{
-	//		cout << " " << output[i];
-	//	}
-	//}
+	bool flag = false;
+	for (int i = 0; i < N; i++)
+	{
+		if (!flag) {
+			flag = true;
+			cout << output[i];
+		}
+		else
+		{
+			cout << " " << output[i];
+		}
+	}
 	cout << endl;
 	return 0;
 }
